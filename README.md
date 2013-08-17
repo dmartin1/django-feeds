@@ -27,14 +27,64 @@ Install using `pip`...
 
     pip install django-feeds
 
-Add `'feeds'` to your `INSTALLED_APPS` setting.
+In settings.py, add `'feeds'` to your `INSTALLED_APPS` setting.
 
     INSTALLED_APPS = (
         ...
         'feeds',        
     )
 
-Optional: Set the `SUMMARIZE_WORD_COUNT_LIMIT` to limit the length of the content created by the summarizer.
+NLTK
+----
+
+Download the NLTK stopworks corpora.  In a python console:
+
+    import nltk
+    nltk.download()
+
+In the corpora section, install `stopwords`.
+
+Logging
+-------
+
+Optional: Update the logger settings to display feed logs.
+
+In settings.py, add `formatters` to the `LOGGING` definition:
+
+    'formatters': {
+        'verbose': {
+            'format'    : '%(asctime)s %(levelname)s - PID=%(process)d Thread=%(thread)d - %(pathname)s:%(lineno)-5s in function %(funcName)s | %(message)s',
+            'datefmt'   : '%Y-%m-%d %H:%M:%S'
+        },
+        'standard': {
+            'format'    : '%(asctime)s %(levelname)s - %(name)s:%(lineno)-5s | %(message)s',
+            'datefmt'   : '%Y-%m-%d %H:%M:%S'
+        },
+        'simple': {
+            'format'    : '%(levelname)s - %(name)s:%(lineno)-5s | %(message)s',
+        },
+    },
+
+Also add the following to `handlers`:
+
+    'console' : {
+        'level'     : 'DEBUG',
+        'class'     : 'logging.StreamHandler',
+        'formatter' : 'standard'
+    },
+
+Also add the following to `loggers`:
+
+    'feeds': {
+        'handlers'  : ['console'],
+        'level'     : 'DEBUG',
+        'propagate' : True,
+    },
+
+Summarizer
+----------
+
+Optional: In settings.py, set the `SUMMARIZE_WORD_COUNT_LIMIT` to limit the length of the content created by the summarizer.
 
     SUMMARIZE_WORD_COUNT_LIMIT = 500
 
