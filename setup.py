@@ -17,7 +17,10 @@ setup(
         "feeds.management",
         "feeds.management.commands",
     ],
-    zip_safe=False,
+    package_data={
+        'feeds': ['*.json']
+    },
+    include_package_data=True,
     install_requires=[
         "Django==1.4.5",
         "pytz>=2013b",
