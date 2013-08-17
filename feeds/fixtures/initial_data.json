@@ -1,0 +1,1 @@
+[{"pk": 1, "model": "feeds.entryfieldchoice", "fields": {"name": "title"}}, {"pk": 2, "model": "feeds.entryfieldchoice", "fields": {"name": "content"}}, {"pk": 3, "model": "feeds.entryfieldchoice", "fields": {"name": "summary"}}]
