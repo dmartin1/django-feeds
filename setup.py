@@ -18,7 +18,7 @@ setup(
         "feeds.management.commands",
     ],
     package_data={
-        'feeds': ['*.json']
+        'feeds': ['fixtures/*.json']
     },
     include_package_data=True,
     zip_safe=False,
