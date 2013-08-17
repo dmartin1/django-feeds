@@ -18,8 +18,7 @@ setup(
         "feeds.management.commands",
     ],
     package_data={
-        'feeds': ['*.json
-        ']
+        'feeds': ['*.json']
     },
     include_package_data=True,
     zip_safe=False,
