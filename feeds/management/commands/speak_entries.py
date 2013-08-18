@@ -1,9 +1,7 @@
-from datetime import timedelta
 from optparse import make_option
 from subprocess import call
 
 from django.core.management.base import BaseCommand, CommandError
-from django.utils.timezone import now
 from feeds.models import Entry
 
 
