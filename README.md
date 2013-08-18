@@ -37,12 +37,11 @@ In settings.py, add `'feeds'` to your `INSTALLED_APPS` setting.
 NLTK
 ----
 
-Download the NLTK stopworks corpora.  In a python console:
+Download the NLTK corpora.  In terminal session run:
 
-    import nltk
-    nltk.download()
+    python -m nltk.downloader all
 
-In the corpora section, install `stopwords`.
+This may take a while depending on your internet connection.
 
 Logging
 -------
