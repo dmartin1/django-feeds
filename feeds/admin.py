@@ -36,6 +36,7 @@ summarize.short_description = "Summarize entries"
 class EntryAdmin(admin.ModelAdmin):
     list_display = ('title', 'feed', 'published', 'spoken', 'read', 'summarized')
     list_filter = ('spoken', 'read', 'summarized', 'feed')
+    search_fields = ['comments', 'content', 'summary', 'title']
     
     actions = [mark_spoken, mark_read, summarize]
 

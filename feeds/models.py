@@ -233,6 +233,14 @@ class Entry(models.Model):
         logger.debug("Summarizing %s" % (self.title,))
         summary = Summary(self.link, parser)
         
+        if not hasattr(summary, 'parts'):
+            print "No summary was found!"
+            
+            # TODO: Note there was an error instead of setting as summarized
+            self.summarized = True
+            self.save()
+            return None
+        
         proposed_content = ''
         for part in summary.parts:
             if not getattr(settings, 'SUMMARIZE_WORD_COUNT_LIMIT', None) or len(proposed_content.split(' ')) < settings.SUMMARIZE_WORD_COUNT_LIMIT:

@@ -82,7 +82,11 @@ class Summary(object):
             logging.error("Available parsers are: %s" % (available_parsers,))
             raise ImportError
         
-        self.soup = bs4.BeautifulSoup(requests.get(url).text, parser)
+        try:
+            self.soup = bs4.BeautifulSoup(requests.get(url).text, parser)
+        except requests.exceptions.ConnectionError:
+            print "Connection error getting url data"
+            return None
         self.title = self.soup.title.string if self.soup.title else None
         self.article_html = find_likely_body(self.soup)
         parts = map(lambda p: re.sub('\s+', ' ', summarize_block(p.text)).strip(), self.article_html.find_all('p'))
