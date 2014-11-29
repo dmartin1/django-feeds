@@ -9,6 +9,9 @@ import bs4
 import re
 import requests
 
+from feeds.alchemyapi.alchemyapi import AlchemyAPI
+from django.conf import settings
+
 # Initialize the logging library
 import logging
 logger = logging.getLogger(__name__)
@@ -81,18 +84,33 @@ class Summary(object):
         if parser not in available_parsers:
             logging.error("Available parsers are: %s" % (available_parsers,))
             raise ImportError
-        
+    
         try:
             self.soup = bs4.BeautifulSoup(requests.get(url).text, parser)
         except requests.exceptions.ConnectionError:
             print "Connection error getting url data"
             return None
         self.title = self.soup.title.string if self.soup.title else None
-        self.article_html = find_likely_body(self.soup)
-        parts = map(lambda p: re.sub('\s+', ' ', summarize_block(p.text)).strip(), self.article_html.find_all('p'))
-        parts = sorted(set(parts), key=parts.index) #dedpulicate and preserve order
-        self.parts = [ re.sub('\s+', ' ', summary.strip()) for summary in parts if filter(lambda c: c.lower() in string.letters, summary) ]
-        self.content = ' '.join(self.parts)
+        
+        if hasattr(settings, "ALCHEMY_API_KEY"):
+            api = AlchemyAPI(settings.ALCHEMY_API_KEY)
+            response = api.text('url', self.url)
+            if response.get('status', 'error') == 'OK':
+                if response.get('text', None) != None:
+                    regex = re.compile(r'[\n\r\t]')
+                    self.content = regex.sub(" ", response['text'])
+        else:
+            self.article_html = find_likely_body(self.soup)
+            parts = map(lambda p: re.sub('\s+', ' ', summarize_block(p.text)).strip(), self.article_html.find_all('p'))
+            parts = sorted(set(parts), key=parts.index) #dedpulicate and preserve order
+            self.parts = [ re.sub('\s+', ' ', summary.strip()) for summary in parts if filter(lambda c: c.lower() in string.letters, summary) ]
+            
+            proposed_content = ''
+            for part in summary.parts:
+                if not getattr(settings, 'SUMMARIZE_WORD_COUNT_LIMIT', None) or len(proposed_content.split(' ')) < settings.SUMMARIZE_WORD_COUNT_LIMIT:
+                    proposed_content = proposed_content + ' ' + part
+            
+            self.content = proposed_content
     
     def __unicode__(self):
         return 'Summary of %s' % (self.url,)

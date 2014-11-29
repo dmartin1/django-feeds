@@ -117,12 +117,16 @@ class AlchemyAPI:
 	BASE_URL = 'http://access.alchemyapi.com/calls'
 
 
-	def __init__(self):
+	def __init__(self, API_KEY=None):
 		"""	
 		Initializes the SDK so it can send requests to AlchemyAPI for analysis.
 		It loads the API key from api_key.txt and configures the endpoints.
 		"""
-
+		
+		if API_KEY != None:
+			self.apikey = API_KEY
+			return
+		
 		import sys
 		try:
 			# Open the key file and read the key
@@ -154,9 +158,7 @@ class AlchemyAPI:
 			sys.exit(0)
 		except Exception as e:
 			print(e)
-
-			
-
+	
 	def entities(self, flavor, data, options={}):
 		"""
 		Extracts the entities for text, a URL or HTML.

@@ -18,7 +18,7 @@ class Command(BaseCommand):
     )
     
     def handle(self, *args, **kwargs):
-        max_entries   = kwargs.get('max_entries', 0)
+        max_entries = kwargs.get('max_entries', 0)
         destination = kwargs.get('destination', None) or "Built-in Output"
         
         spoken_entry_count = 0
@@ -26,6 +26,6 @@ class Command(BaseCommand):
             Entry.objects.filter(spoken=False).count() > 0 and
             spoken_entry_count == 0 or spoken_entry_count <= max_entries
         ):
-            entry = Entry.objects.filter(spoken=False)[0]
+            entry = Entry.objects.filter(spoken=False, summarized=True)[0]
             call(["say", "-a", '%s' % (destination,), "Next"])
             entry.speak_aloud(destination)

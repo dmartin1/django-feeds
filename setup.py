@@ -13,6 +13,7 @@ setup(
     keywords="django RSS feeds speech",
     packages=[
         "feeds",
+        "feeds.alchemyapi",
         "feeds.fixtures",
         "feeds.management",
         "feeds.management.commands",
