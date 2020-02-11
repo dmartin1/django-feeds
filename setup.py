@@ -24,7 +24,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        "Django==1.4.5",
+        "Django==1.11.28",
         "pytz>=2013b",
         "feedparser",
         "python-dateutil",
